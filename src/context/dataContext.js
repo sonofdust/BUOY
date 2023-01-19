@@ -12,7 +12,6 @@ export const DataProvider = ({children}) => {
   const [searchResults, setSearchResults] = useState([]);
   const [postTitle, setPostTitle] = useState("");
   const [postBody, setPostBody] = useState("");
-
   const [editTitle, setEditTitle] = useState("");
   const [editBody, setEditBody] = useState("");
 
@@ -106,6 +105,8 @@ export const DataProvider = ({children}) => {
         setEditBody,
         editBody,
         format,
+        api,
+        setPosts,
       }}
     >
       {children}
