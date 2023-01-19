@@ -8,6 +8,7 @@ const NewPost = () => {
   const [postBody, setPostBody] = useState("");
   const {posts, setPosts, format, api} = useContext(DataContext);
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const id = posts.length ? Math.max(...posts.map((item) => item.id)) + 1 : 1;
