@@ -1,12 +1,15 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import Missing from "./Missing";
 import {useContext} from "react";
 import DataContext from "../context/dataContext";
+import api from "../api/posts";
 
 const EditPost = () => {
-  const {posts, handleEdit, editBody, setEditBody, editTitle, setEditTitle} =
-    useContext(DataContext);
+  const [editTitle, setEditTitle] = useState("");
+  const [editBody, setEditBody] = useState("");
+
+  const {posts, setPosts, navigate, format} = useContext(DataContext);
 
   const {id} = useParams();
   const post = posts.find((e) => e.id == id);
@@ -16,6 +19,26 @@ const EditPost = () => {
       setEditBody(post.body);
     }
   }, [post, setEditTitle, setEditBody]);
+
+  const handleEdit = async (id) => {
+    try {
+      const datetime = format(new Date(), "MMMM dd, yyyy pp");
+      const updatedPost = {
+        id,
+        title: editTitle,
+        datetime,
+        body: editBody,
+      };
+      const response = await api.put(`/posts/${id}`, updatedPost);
+      setPosts(posts.map((e) => (e.id === id ? {...response.data} : e)));
+      setEditTitle("");
+      setEditBody("");
+      navigate("/");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <main className="NewPost">
       {editTitle && (
