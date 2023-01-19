@@ -7,10 +7,10 @@ import api from "../api/posts";
 
 const PostPage = () => {
   const {posts, setPosts, navigate} = useContext(DataContext);
-  //const [posts, setPosts] = useState([]);
 
   const {id} = useParams();
   const post = posts.find((post) => post.id.toString() === id);
+
   const handleDelete = async (id) => {
     setPosts([...posts.filter((e) => e.id !== id)]);
     api.delete(`/posts/${id}`);
