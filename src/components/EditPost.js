@@ -4,12 +4,13 @@ import Missing from "./Missing";
 import {useContext} from "react";
 import DataContext from "../context/dataContext";
 import api from "../api/posts";
+import format from "date-fns/format";
 
 const EditPost = () => {
   const [editTitle, setEditTitle] = useState("");
   const [editBody, setEditBody] = useState("");
 
-  const {posts, setPosts, navigate, format} = useContext(DataContext);
+  const {posts, setPosts, navigate} = useContext(DataContext);
 
   const {id} = useParams();
   const post = posts.find((e) => e.id == id);

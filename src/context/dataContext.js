@@ -1,20 +1,18 @@
 import {createContext, useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
 import useAxiosFetch from "../hooks/useAxiosFetch";
-import api from "../api/posts";
-import format from "date-fns/format";
+import {useNavigate} from "react-router-dom";
 
 const DataContext = createContext({});
 
 export const DataProvider = ({children}) => {
-  const [posts, setPosts] = useState([]);
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [posts, setPosts] = useState([]);
 
-  const navigate = useNavigate();
   const {data, fetchError, isLoading} = useAxiosFetch(
     "http://localhost:3500/posts"
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     setPosts(data);
@@ -29,16 +27,6 @@ export const DataProvider = ({children}) => {
     setSearchResults(filtered.reverse());
   }, [posts, search]);
 
-  const handleDelete = async (id) => {
-    setPosts([...posts.filter((e) => e.id !== id)]);
-    api.delete(`/posts/${id}`);
-    navigate("/");
-    try {
-    } catch (error) {
-      console.log(`Error: ${error.message}`);
-    }
-  };
-
   return (
     <DataContext.Provider
       value={{
@@ -47,11 +35,9 @@ export const DataProvider = ({children}) => {
         searchResults,
         fetchError,
         isLoading,
-        handleDelete,
+        setPosts,
         posts,
         navigate,
-        setPosts,
-        format,
       }}
     >
       {children}
