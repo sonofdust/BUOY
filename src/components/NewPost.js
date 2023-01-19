@@ -1,12 +1,21 @@
 import React from "react";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import DataContext from "../context/dataContext";
 import {useNavigate} from "react-router-dom";
 
 const NewPost = () => {
-  const [postTitle, setPostTitle] = useState("");
-  const [postBody, setPostBody] = useState("");
-  const {posts, setPosts, format, api} = useContext(DataContext);
+  // const [postTitle, setPostTitle] = useState("");
+  // const [postBody, setPostBody] = useState("");
+  const {
+    posts,
+    setPosts,
+    format,
+    api,
+    postTitle,
+    setPostTitle,
+    postBody,
+    setPostBody,
+  } = useContext(DataContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
