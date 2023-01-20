@@ -1,24 +1,18 @@
 import React from "react";
-import {useParams, Link} from "react-router-dom";
+import {useParams, Link, useNavigate} from "react-router-dom";
 import Missing from "./Missing";
-import {useContext} from "react";
-import DataContext from "../context/dataContext";
-import api from "../api/posts";
+import {useStoreState, useStoreActions} from "easy-peasy";
 
 const PostPage = () => {
-  const {posts, setPosts, navigate} = useContext(DataContext);
-
   const {id} = useParams();
-  const post = posts.find((post) => post.id.toString() === id);
+  const {deletePosts} = useStoreActions((actions) => actions.deletePosts);
+  const getPostById = useStoreState((state) => state.getPostById);
+  const post = getPostById(id);
+  const navigate = useNavigate();
 
   const handleDelete = async (id) => {
-    setPosts([...posts.filter((e) => e.id !== id)]);
-    api.delete(`/posts/${id}`);
+    deletePosts(id);
     navigate("/");
-    try {
-    } catch (error) {
-      console.log(`Error: ${error.message}`);
-    }
   };
 
   return (
@@ -32,10 +26,7 @@ const PostPage = () => {
             <Link to={`/edit/${post.id}`}>
               <button className="editButton">Edit Post</button>
             </Link>
-            <button
-              className="deleteButton"
-              onClick={() => handleDelete(post.id)}
-            >
+            <button className="deleteButton" onClick={() => handleDelete}>
               Delete Post
             </button>
           </>

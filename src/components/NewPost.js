@@ -1,13 +1,21 @@
 import React from "react";
-import {useContext, useState} from "react";
-import DataContext from "../context/dataContext";
-import api from "../api/posts";
 import format from "date-fns/format";
+import {useStoreActions, useStoreState} from "easy-peasy";
+import {useNavigate} from "react-router-dom";
 
 const NewPost = () => {
-  const [postTitle, setPostTitle] = useState("");
-  const [postBody, setPostBody] = useState("");
-  const {posts, setPosts, navigate} = useContext(DataContext);
+  const navigate = useNavigate();
+  const posts = useStoreState((state) => state.posts);
+  const postTitle = useStoreState((state) => state.postTitle);
+  const postBody = useStoreState((state) => state.postBody);
+
+  const savePost = useStoreActions((action) => action.savePost);
+  const setPostTitle = useStoreActions((action) => action.setPostTitle);
+  const setPostBody = useStoreActions((action) => action.setPostBody);
+
+  // const [postTitle, setPostTitle] = useState("");
+  // const [postBody, setPostBody] = useState("");
+  // const {posts, setPosts, navigate} = useContext(DataContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,16 +27,8 @@ const NewPost = () => {
       datetime,
       body: postBody,
     };
-    try {
-      const result = await api.post("/posts", newPost);
-      setPosts([...posts, result.data]);
-      setPostBody("");
-      setPostTitle("");
-      navigate("/");
-    } catch (e) {
-      // Not in 200 response range.
-      console.log("Error: ", e.message);
-    }
+    savePost(newPost);
+    navigate("/");
   };
 
   return (
