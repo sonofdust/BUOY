@@ -1,4 +1,3 @@
-import {isToday} from "date-fns";
 import React from "react";
 
 const Footer = () => {

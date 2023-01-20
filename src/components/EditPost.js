@@ -14,6 +14,7 @@ const EditPost = () => {
 
   const {id} = useParams();
   const post = posts.find((e) => e.id == id);
+
   useEffect(() => {
     if (!!post) {
       setEditTitle(post.title);
