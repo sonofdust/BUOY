@@ -9,13 +9,9 @@ const NewPost = () => {
   const postTitle = useStoreState((state) => state.postTitle);
   const postBody = useStoreState((state) => state.postBody);
 
-  const savePost = useStoreActions((action) => action.savePost);
-  const setPostTitle = useStoreActions((action) => action.setPostTitle);
-  const setPostBody = useStoreActions((action) => action.setPostBody);
-
-  // const [postTitle, setPostTitle] = useState("");
-  // const [postBody, setPostBody] = useState("");
-  // const {posts, setPosts, navigate} = useContext(DataContext);
+  const savePost = useStoreActions((actions) => actions.savePost);
+  const setPostTitle = useStoreActions((actions) => actions.setPostTitle);
+  const setPostBody = useStoreActions((actions) => actions.setPostBody);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

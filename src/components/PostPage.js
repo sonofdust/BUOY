@@ -1,17 +1,24 @@
 import React from "react";
-import {useParams, Link, useNavigate} from "react-router-dom";
+import {useParams, Link} from "react-router-dom";
 import Missing from "./Missing";
 import {useStoreState, useStoreActions} from "easy-peasy";
-
+import {useNavigate} from "react-router-dom";
 const PostPage = () => {
-  const {id} = useParams();
-  const {deletePosts} = useStoreActions((actions) => actions.deletePosts);
-  const getPostById = useStoreState((state) => state.getPostById);
-  const post = getPostById(id);
   const navigate = useNavigate();
+  const {id} = useParams();
+  const deletePost = useStoreActions((actions) => actions.deletePost);
+  const getPostById = useStoreState((state) => state.getPostById);
 
-  const handleDelete = async (id) => {
-    deletePosts(id);
+  // const setPosts = useStoreActions((actions) => actions.setPosts);
+  // const posts = useStoreState((state) => state.posts);
+
+  const post = getPostById(id);
+
+  const handleDelete = async (e) => {
+    //    console.log(id);
+    e.preventDefault();
+    deletePost(id);
+    // setPosts(posts);
     navigate("/");
   };
 
@@ -26,11 +33,15 @@ const PostPage = () => {
             <Link to={`/edit/${post.id}`}>
               <button className="editButton">Edit Post</button>
             </Link>
-            <button className="deleteButton" onClick={() => handleDelete}>
+            <button
+              type="button"
+              className="deleteButton"
+              onClick={handleDelete}
+            >
               Delete Post
             </button>
           </>
-        )}{" "}
+        )}
         {!post && <Missing />}
       </article>
     </main>

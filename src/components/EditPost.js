@@ -1,19 +1,23 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useParams} from "react-router-dom";
 import Missing from "./Missing";
-import {useContext} from "react";
-import DataContext from "../context/dataContext";
-import api from "../api/posts";
 import format from "date-fns/format";
+import {useNavigate} from "react-router-dom";
+import {useStoreState, useStoreActions} from "easy-peasy";
 
 const EditPost = () => {
-  const [editTitle, setEditTitle] = useState("");
-  const [editBody, setEditBody] = useState("");
-
-  const {posts, setPosts, navigate} = useContext(DataContext);
-
   const {id} = useParams();
-  const post = posts.find((e) => e.id == id);
+  const navigate = useNavigate();
+  const setEditBody = useStoreActions((actions) => actions.setEditBody);
+  const editBody = useStoreState((state) => state.editBody);
+
+  const setEditTitle = useStoreActions((actions) => actions.setEditTitle);
+  const editTitle = useStoreState((state) => state.editTitle);
+
+  const editPost = useStoreActions((actions) => actions.editPost);
+
+  const getPostById = useStoreState((state) => state.getPostById);
+  const post = getPostById(id);
 
   useEffect(() => {
     if (!!post) {
@@ -31,8 +35,7 @@ const EditPost = () => {
         datetime,
         body: editBody,
       };
-      const response = await api.put(`/posts/${id}`, updatedPost);
-      setPosts(posts.map((e) => (e.id === id ? {...response.data} : e)));
+      editPost(updatedPost);
       setEditTitle("");
       setEditBody("");
       navigate("/");
@@ -62,7 +65,7 @@ const EditPost = () => {
               value={editBody}
               onChange={(e) => setEditBody(e.target.value)}
             />
-            <button type="submit" onClick={() => handleEdit(post.id)}>
+            <button type="button" onClick={() => handleEdit(post.id)}>
               Submit
             </button>
           </form>
