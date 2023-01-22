@@ -38,7 +38,7 @@ export default createStore({
     state.searchResults = payload;
   }),
 
-  postCount: computed((state) => state.posts.lenght),
+  postCount: computed((state) => state.posts.length),
   getPostById: computed((state) => {
     return (id) => state.posts.find((post) => post.id == id);
   }),
